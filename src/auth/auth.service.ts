@@ -1,9 +1,16 @@
 import { Injectable, Body, NotFoundException } from '@nestjs/common';
 import { DTO } from './auth.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AuthEntity } from 'src/entities/auth.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
-  postRequest(@Body() dto: DTO): object {
+  constructor(
+    @InjectRepository(AuthEntity)
+    private authRepository: Repository<AuthEntity>,
+  ) {}
+  async postRequest(@Body() dto: DTO) {
     if (
       Object.keys(dto)[0] == undefined ||
       Object.keys(dto)[0] == '' ||
@@ -11,6 +18,10 @@ export class AuthService {
     ) {
       throw new NotFoundException('Request is not complete.');
     }
+    await this.authRepository.save({
+      username: Object.keys(dto)[0],
+      password: Object.values(dto)[0],
+    });
     return { response: 'success', data: dto };
   }
 }
