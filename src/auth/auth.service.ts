@@ -10,7 +10,7 @@ export class AuthService {
     @InjectRepository(AuthEntity)
     private authRepository: Repository<AuthEntity>,
   ) {}
-  async postRequest(@Body() dto: DTO) {
+  async postData(@Body() dto: DTO) {
     if (
       Object.keys(dto)[0] == undefined ||
       Object.keys(dto)[0] == '' ||
