@@ -14,4 +14,8 @@ export class AuthController {
   delData(@Param('id') id: number) {
     return this.authService.delData(id);
   }
+  @Get('all')
+  getAllData() {
+    return this.authService.getAllData();
+  }
 }

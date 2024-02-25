@@ -44,4 +44,9 @@ export class AuthService {
       return { result: `id ${id} not found` };
     }
   }
+
+  async getAllData() {
+    const allData = await this.authRepository.find();
+    return allData;
+  }
 }
