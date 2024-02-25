@@ -12,6 +12,13 @@ export class AuthService {
   ) {}
   async postData(@Body() dto: DTO) {
     if (
+      await this.authRepository.findOne({
+        where: { username: Object.keys(dto)[0] },
+      })
+    ) {
+      return { response: 'auth exists' };
+    }
+    if (
       Object.keys(dto)[0] == undefined ||
       Object.keys(dto)[0] == '' ||
       Object.values(dto)[0] == ''
