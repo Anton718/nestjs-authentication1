@@ -26,7 +26,15 @@ export class AuthService {
   }
 
   async delData(id: number) {
-    await this.authRepository.delete(id);
-    return { response: 'done' };
+    if (
+      await this.authRepository.findOne({
+        where: { id: id },
+      })
+    ) {
+      await this.authRepository.delete(id);
+      return { result: `deleted id ${id}` };
+    } else {
+      return { result: `id ${id} not found` };
+    }
   }
 }
