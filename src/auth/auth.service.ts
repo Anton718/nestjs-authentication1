@@ -24,4 +24,9 @@ export class AuthService {
     });
     return { response: 'success', data: dto };
   }
+
+  async delData(id: number) {
+    await this.authRepository.delete(id);
+    return { response: 'done' };
+  }
 }
