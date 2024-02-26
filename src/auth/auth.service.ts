@@ -13,23 +13,19 @@ export class AuthService {
   async postData(@Body() dto: DTO) {
     if (
       await this.authRepository.findOne({
-        where: { username: Object.keys(dto)[0] },
+        where: { username: dto.username },
       })
     ) {
       return { response: 'auth exists' };
     }
-    if (
-      Object.keys(dto)[0] == undefined ||
-      Object.keys(dto)[0] == '' ||
-      Object.values(dto)[0] == ''
-    ) {
+    if (dto.username == undefined || dto.username == '' || dto.password == '') {
       throw new NotFoundException('Request is not complete.');
     }
-    await this.authRepository.save({
-      username: Object.keys(dto)[0],
-      password: Object.values(dto)[0],
+    this.authRepository.save({
+      username: dto.username,
+      password: dto.password,
     });
-    return { response: 'success', data: dto };
+    return { response: 'new auth saved' };
   }
 
   async delData(id: number) {
