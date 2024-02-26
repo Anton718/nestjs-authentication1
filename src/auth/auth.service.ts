@@ -55,6 +55,9 @@ export class AuthService {
     const authInstance = await this.authRepository.findOne({
       where: { id: dto.id },
     });
+    if (!authInstance) {
+      return { response: 'id not found' };
+    }
     if (dto.id == authInstance.id) {
       if (
         dto.username !== authInstance.username &&
@@ -67,6 +70,5 @@ export class AuthService {
       await this.authRepository.update(dto.id, dto);
       return { response: 'success' };
     }
-    return { response: 'id not found' };
   }
 }
