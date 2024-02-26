@@ -1,9 +1,8 @@
 import { Injectable, Body, NotFoundException } from '@nestjs/common';
-import { DTO } from './auth.dto';
+import { DTO, updateDTO } from './auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthEntity } from 'src/entities/auth.entity';
 import { Repository } from 'typeorm';
-import { updateDTO } from './updateAuth.dto';
 
 @Injectable()
 export class AuthService {

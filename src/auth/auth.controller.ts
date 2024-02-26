@@ -1,7 +1,6 @@
 import { Controller, Post, Body, Param, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { DTO } from './auth.dto';
-import { updateDTO } from './updateAuth.dto';
+import { DTO, updateDTO } from './auth.dto';
 
 @Controller()
 export class AuthController {
