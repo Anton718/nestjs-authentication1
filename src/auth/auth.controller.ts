@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Param, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { DTO } from './auth.dto';
+import { updateDTO } from './updateAuth.dto';
 
 @Controller()
 export class AuthController {
@@ -17,5 +18,9 @@ export class AuthController {
   @Get('all')
   getAllData() {
     return this.authService.getAllData();
+  }
+  @Post('update')
+  updateAuth(@Body() updatedDTO: updateDTO) {
+    return this.authService.updateAuth(updatedDTO);
   }
 }

@@ -3,6 +3,7 @@ import { DTO } from './auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthEntity } from 'src/entities/auth.entity';
 import { Repository } from 'typeorm';
+import { updateDTO } from './updateAuth.dto';
 
 @Injectable()
 export class AuthService {
@@ -48,5 +49,24 @@ export class AuthService {
   async getAllData() {
     const allData = await this.authRepository.find();
     return allData;
+  }
+
+  async updateAuth(@Body() dto: updateDTO) {
+    const authInstance = await this.authRepository.findOne({
+      where: { id: dto.id },
+    });
+    if (dto.id == authInstance.id) {
+      if (
+        dto.username !== authInstance.username &&
+        (await this.authRepository.findOne({
+          where: { username: dto.username },
+        }))
+      ) {
+        return { response: 'auth exists' };
+      }
+      await this.authRepository.update(dto.id, dto);
+      return { response: 'success' };
+    }
+    return { response: 'id not found' };
   }
 }
