@@ -13,4 +13,7 @@ export class ProfileEntity {
 
   @Column()
   info: string;
+
+  @Column()
+  dateCreated: string;
 }

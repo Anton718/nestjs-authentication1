@@ -18,13 +18,21 @@ export class ProfileService {
       where: { username: dto.username },
     });
     if (authEntry) {
+      const checkProfileEntry = await this.profileRepository.findOne({
+        where: { username: dto.username },
+      });
+      if (checkProfileEntry) {
+        return { error: 'profile exists' };
+      }
+      const date = new Date();
       this.profileRepository.save({
         auth_id: authEntry.id,
         username: dto.username,
         info: dto.info,
+        dateCreated: date.getTime().toString(),
       });
-      return { response: 'profile created' };
+      return { success: 'profile created' };
     }
-    return { response: 'failed to create a profile' };
+    return { error: 'failed to create a profile' };
   }
 }
