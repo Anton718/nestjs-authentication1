@@ -1,7 +1,7 @@
 import { Injectable, Body, NotFoundException } from '@nestjs/common';
 import { DTO, updateDTO } from './auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthEntity } from 'src/entities/auth.entity';
+import { AuthEntity } from 'src/auth/entities/auth.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
