@@ -2,7 +2,7 @@ import { Body, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProfileEntity } from './entities/profile.entity';
-import { profileDTO } from './profile.dto';
+import { profileDTO, updateDTO } from './profile.dto';
 import { AuthEntity } from 'src/auth/entities/auth.entity';
 
 @Injectable()
@@ -34,5 +34,20 @@ export class ProfileService {
       return { success: 'profile created' };
     }
     return { error: 'failed to create a profile' };
+  }
+  async updateProfile(@Body() dtoUpdated: updateDTO) {
+    const updated = await this.profileRepository.findOne({
+      where: { username: dtoUpdated.username },
+    });
+    if (updated.username == dtoUpdated.username) {
+      await this.profileRepository.update(
+        {
+          username: dtoUpdated.username,
+        },
+        { info: dtoUpdated.info },
+      );
+      return { result: 'updated' };
+    }
+    return { result: 'not updated' };
   }
 }

@@ -15,3 +15,12 @@ export class profileDTO {
     this.dateCreated = dateCreated;
   }
 }
+
+export class updateDTO {
+  username: string;
+  info: string;
+  constructor(username: string, info: string) {
+    this.username = username;
+    this.info = info;
+  }
+}
