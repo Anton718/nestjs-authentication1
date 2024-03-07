@@ -39,7 +39,13 @@ export class ProfileService {
     const updated = await this.profileRepository.findOne({
       where: { username: dtoUpdated.username },
     });
-    if (updated.username == dtoUpdated.username) {
+    if (!updated) {
+      return { result: 'no matches in database' };
+    }
+    if (
+      updated.username == dtoUpdated.username &&
+      dtoUpdated.info !== undefined
+    ) {
       await this.profileRepository.update(
         {
           username: dtoUpdated.username,
