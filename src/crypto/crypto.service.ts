@@ -1,9 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AuthEntity } from 'src/auth/entities/auth.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CryptoService {
-  constructor() {}
-  async getRates() {
+  constructor(
+    @InjectRepository(AuthEntity)
+    private authRepository: Repository<AuthEntity>,
+  ) {}
+  async getRates(id: number) {
+    if (!(await this.authRepository.findOne({ where: { id: id } }))) {
+      return { response: 'you are not logged in' };
+    }
     const cryptos = [
       'BTC',
       'ETH',

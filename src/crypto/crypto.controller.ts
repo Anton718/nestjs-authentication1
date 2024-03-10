@@ -1,11 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { CryptoService } from './crypto.service';
 
-@Controller()
+@Controller('crypto')
 export class CryptoController {
   constructor(private readonly cryptoService: CryptoService) {}
-  @Get('crypto')
-  getCrypto() {
-    return this.cryptoService.getRates();
+  @Get(':id')
+  getCrypto(@Param('id') id: number) {
+    return this.cryptoService.getRates(id);
   }
 }
