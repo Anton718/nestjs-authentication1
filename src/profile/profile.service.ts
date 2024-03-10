@@ -42,7 +42,6 @@ export class ProfileService {
     if (!updated) {
       return { result: 'no matches in database' };
     }
-    console.log(updated);
     if (
       updated.username == dtoUpdated.username &&
       dtoUpdated.info !== undefined
