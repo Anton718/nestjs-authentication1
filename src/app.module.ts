@@ -7,6 +7,8 @@ import { AuthEntity } from './auth/entities/auth.entity';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileEntity } from './profile/entities/profile.entity';
 import { CryptoModule } from './crypto/crypto.module';
+import { WalletEntity } from './wallet/entities/wallet.entity';
+import { WalletModule } from './wallet/wallet.module';
 
 @Module({
   imports: [
@@ -17,12 +19,13 @@ import { CryptoModule } from './crypto/crypto.module';
       username: 'postgres',
       password: 'postgres',
       database: 'nest-data',
-      entities: [AuthEntity, ProfileEntity],
+      entities: [AuthEntity, ProfileEntity, WalletEntity],
       synchronize: true,
     }),
     AuthModule,
     ProfileModule,
     CryptoModule,
+    WalletModule,
   ],
   controllers: [AppController],
   providers: [AppService],
