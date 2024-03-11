@@ -39,8 +39,9 @@ export class ProfileService {
     const user = await this.profileRepository.findOne({
       where: { username: dto.username },
     });
-    const totalBalance = Number(user.balanceUSD || 0) + Number(dto.balanceUSD);
     if (user) {
+      const totalBalance =
+        Number(user.balanceUSD || 0) + Number(dto.balanceUSD);
       await this.profileRepository.update(
         { auth_id: user.auth_id },
         {
@@ -50,5 +51,20 @@ export class ProfileService {
       return { success: `you added to your balance: ${dto.balanceUSD} USD` };
     }
     return { failed: 'failed to fill balance' };
+  }
+
+  async viewProfile(id: number) {
+    const user = await this.profileRepository.findOne({
+      where: { auth_id: id },
+    });
+    if (user) {
+      const userObj = {};
+      const date = new Date(Number(user.dateCreated) * 1000);
+      userObj['username'] = user.username;
+      userObj['registered on'] = date.toUTCString();
+      userObj['Balance, USD'] = user.balanceUSD;
+      return { 'user profile': userObj };
+    }
+    return { error: 'user does not exist' };
   }
 }

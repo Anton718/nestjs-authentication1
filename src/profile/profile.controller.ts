@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { profileDTO } from './profile.dto';
 
@@ -14,5 +14,9 @@ export class ProfileController {
     @Body() dto: { username: string; password: string; balanceUSD: string },
   ) {
     return this.profileService.topBalance(dto);
+  }
+  @Get('user_profile/:id')
+  viewProfile(@Param('id') id: number) {
+    return this.profileService.viewProfile(id);
   }
 }
