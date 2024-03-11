@@ -12,8 +12,8 @@ export class ProfileEntity {
   username: string;
 
   @Column()
-  info: string;
-
-  @Column()
   dateCreated: string;
+
+  @Column({ type: 'float' })
+  balanceUSD: string;
 }

@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import { profileDTO, updateDTO } from './profile.dto';
+import { profileDTO } from './profile.dto';
 
 @Controller()
 export class ProfileController {
@@ -9,8 +9,10 @@ export class ProfileController {
   createProfile(@Body() dto: profileDTO) {
     return this.profileService.createProfile(dto);
   }
-  @Post('update_profile')
-  updateProfile(@Body() dtoUpdated: updateDTO) {
-    return this.profileService.updateProfile(dtoUpdated);
+  @Post('top_balance')
+  topBalance(
+    @Body() dto: { username: string; password: string; balanceUSD: string },
+  ) {
+    return this.profileService.topBalance(dto);
   }
 }

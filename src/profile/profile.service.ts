@@ -2,7 +2,7 @@ import { Body, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProfileEntity } from './entities/profile.entity';
-import { profileDTO, updateDTO } from './profile.dto';
+import { profileDTO } from './profile.dto';
 import { AuthEntity } from 'src/auth/entities/auth.entity';
 
 @Injectable()
@@ -28,32 +28,27 @@ export class ProfileService {
       this.profileRepository.save({
         auth_id: authEntry.id,
         username: dto.username,
-        info: dto.info,
         dateCreated: date.getTime().toString(),
+        balanceUSD: '0',
       });
       return { success: 'profile created' };
     }
     return { error: 'failed to create a profile' };
   }
-  async updateProfile(@Body() dtoUpdated: updateDTO) {
-    const updated = await this.profileRepository.findOne({
-      where: { username: dtoUpdated.username },
+  async topBalance(@Body() dto: { username: string; balanceUSD: string }) {
+    const user = await this.profileRepository.findOne({
+      where: { username: dto.username },
     });
-    if (!updated) {
-      return { result: 'no matches in database' };
-    }
-    if (
-      updated.username == dtoUpdated.username &&
-      dtoUpdated.info !== undefined
-    ) {
+    const totalBalance = Number(user.balanceUSD || 0) + Number(dto.balanceUSD);
+    if (user) {
       await this.profileRepository.update(
+        { auth_id: user.auth_id },
         {
-          username: dtoUpdated.username,
+          balanceUSD: totalBalance.toFixed(2),
         },
-        { info: dtoUpdated.info },
       );
-      return { result: 'updated' };
+      return { success: `you added to your balance: ${dto.balanceUSD} USD` };
     }
-    return { result: 'not updated' };
+    return { failed: 'failed to fill balance' };
   }
 }

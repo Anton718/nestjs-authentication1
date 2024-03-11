@@ -1,26 +1,17 @@
 export class profileDTO {
   private auth_id: number;
   username: string;
-  info: string;
   private dateCreated: string;
+  private balanceUSD: number;
   constructor(
     auth_id: number,
     username: string,
-    info: string,
     dateCreated: string,
+    balanceUSD: number,
   ) {
     this.auth_id = auth_id;
     this.username = username;
-    this.info = info;
     this.dateCreated = dateCreated;
-  }
-}
-
-export class updateDTO {
-  username: string;
-  info: string;
-  constructor(username: string, info: string) {
-    this.username = username;
-    this.info = info;
+    this.balanceUSD = balanceUSD;
   }
 }
