@@ -25,7 +25,7 @@ export class ProfileService {
         return { error: 'profile exists' };
       }
       const date = new Date();
-      this.profileRepository.save({
+      await this.profileRepository.save({
         auth_id: authEntry.id,
         username: dto.username,
         dateCreated: date.getTime().toString(),
