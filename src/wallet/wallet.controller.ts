@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { walletDTO } from './wallet.dto';
 
@@ -9,5 +9,10 @@ export class WalletController {
   @Post('create_wallet')
   createWallet(@Body() dto: walletDTO) {
     return this.walletService.createWallet(dto);
+  }
+
+  @Get('wallet/:id')
+  getWalletInfo(@Param('id') id: number) {
+    return this.walletService.getWalletInfo(id);
   }
 }

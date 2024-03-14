@@ -48,4 +48,28 @@ export class WalletService {
     }
     return { failed: 'failed to create wallet' };
   }
+  async getWalletInfo(id: number) {
+    const user = await this.authRepository.findOne({
+      where: { id: id },
+    });
+    if (user) {
+      const data = await this.walletRepository.find({ where: { auth_id: id } });
+      if (data) {
+        let acc = {};
+        const wallets = [];
+        for (const i of data) {
+          for (const j of Object.keys(i)) {
+            if (j !== 'id' && j !== 'auth_id' && i[j] !== 0) {
+              acc[j] = i[j];
+            }
+          }
+          wallets.push(acc);
+          acc = {};
+        }
+        console.log(wallets);
+        return wallets;
+      }
+    }
+    return { result: 'user does not exist' };
+  }
 }
