@@ -10,9 +10,7 @@ export class ProfileController {
     return this.profileService.createProfile(dto);
   }
   @Post('top_balance')
-  topBalance(
-    @Body() dto: { username: string; password: string; balanceUSD: string },
-  ) {
+  topBalance(@Body() dto: { username: string; amount: string }) {
     return this.profileService.topBalance(dto);
   }
   @Get('user_profile/:id')

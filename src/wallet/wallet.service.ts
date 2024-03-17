@@ -92,7 +92,7 @@ export class WalletService {
     const userBalanceUSD = await this.profileRepository.findOne({
       where: { auth_id: userAuth.id },
     });
-    if (Number(userBalanceUSD.balanceUSD) === 0) {
+    if (Number(userBalanceUSD.balanceUSD) === 0 && dto.trade === 'buy') {
       return { result: 'please top your balance' };
     }
     let response;
@@ -116,7 +116,7 @@ export class WalletService {
         });
         if (dto.trade === 'buy') {
           const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+            Number(dto.amountUSD) / Number(currentCoinPrice);
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceBTC) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -127,7 +127,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -145,13 +145,13 @@ export class WalletService {
             Number(dto.amountCrypto);
           const newBalanceUSD =
             Number(userBalanceUSD.balanceUSD) +
-            currentCoinPrice * Number(dto.amountCrypto);
+            Number(currentCoinPrice) * Number(dto.amountCrypto);
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
             balanceBTC: userUpdatedCryptoBalance.toString(),
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -169,8 +169,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceETH) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -181,7 +180,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -205,7 +204,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -223,8 +222,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceUSDT) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -235,7 +233,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -259,7 +257,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -277,8 +275,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceBNB) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -289,7 +286,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -313,7 +310,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -331,8 +328,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceSOL) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -343,7 +339,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -367,7 +363,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -385,8 +381,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceXRP) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -397,7 +392,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -421,7 +416,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -439,8 +434,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceUSDC) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -451,7 +445,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -475,7 +469,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -493,8 +487,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceADA) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -505,7 +498,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -529,7 +522,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -547,8 +540,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceAVAX) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -559,7 +551,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -583,7 +575,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -601,8 +593,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceDOGE) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -613,7 +604,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -637,7 +628,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -655,8 +646,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceTRX) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -667,7 +657,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -691,7 +681,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;
@@ -709,8 +699,7 @@ export class WalletService {
           where: { account: destinationWallet },
         });
         if (dto.trade === 'buy') {
-          const amountInTargetCoin =
-            Number(userBalanceUSD.balanceUSD) / currentCoinPrice;
+          const amountInTargetCoin = Number(dto.amountUSD) / currentCoinPrice;
           const userUpdatedCryptoBalance =
             Number(userCurrentCryptoBalance.balanceLINK) + amountInTargetCoin;
           await this.walletRepository.update(userCurrentCryptoBalance.id, {
@@ -721,7 +710,7 @@ export class WalletService {
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
             {
-              balanceUSD: newBalanceUSD.toString(),
+              balanceUSD: newBalanceUSD.toFixed(2),
             },
           );
         } else if (dto.trade === 'sell') {
@@ -745,7 +734,7 @@ export class WalletService {
           });
           await this.profileRepository.update(
             { auth_id: dto.auth_id },
-            { balanceUSD: newBalanceUSD.toString() },
+            { balanceUSD: newBalanceUSD.toFixed(2) },
           );
         }
         break;

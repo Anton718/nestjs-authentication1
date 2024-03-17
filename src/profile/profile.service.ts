@@ -35,20 +35,19 @@ export class ProfileService {
     }
     return { error: 'failed to create a profile' };
   }
-  async topBalance(@Body() dto: { username: string; balanceUSD: string }) {
+  async topBalance(@Body() dto: { username: string; amount: string }) {
     const user = await this.profileRepository.findOne({
       where: { username: dto.username },
     });
     if (user) {
-      const totalBalance =
-        Number(user.balanceUSD || 0) + Number(dto.balanceUSD);
+      const totalBalance = Number(user.balanceUSD) + Number(dto.amount);
       await this.profileRepository.update(
         { auth_id: user.auth_id },
         {
           balanceUSD: totalBalance.toFixed(2),
         },
       );
-      return { success: `you added to your balance: ${dto.balanceUSD} USD` };
+      return { success: `you added to your balance: ${dto.amount} USD` };
     }
     return { failed: 'failed to fill balance' };
   }
