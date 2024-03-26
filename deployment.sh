@@ -1,14 +1,17 @@
 #!/bin/bash
+#THis is a script that deploys the project to pristine ubuntu server, 
+#(commented commands at the bottom of the script need to be run manually after running the script)
+
 
 # installs NVM (Node Version Manager)
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
-#### need to install git-all
+# installs git
 
 sudo apt install git-all
 
-# download application 
+# download application from GitHub
 
 git clone https://github.com/Anton718/nestjs-authentication1.git
 
@@ -29,18 +32,12 @@ sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
 
 sudo -u postgres psql -c 'create database "nest-data"'
 
-#######################################
-#######################################
-#Below commands need to be installed manually:
+##########################################
+# BELOW COMMANDS NEED TO BE RUN MANUALLY #
+##########################################
 
 # nvm install 21
 
 # cd /home/user/nest*
 
 # npm install
-
-# npm i -g pm2
-
-# start app
-
-# pm2 start /home/user/nest*/dist/main.js
